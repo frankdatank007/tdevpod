@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# TDevPod: Toddler Dev Pod — toddler-safe developer pod.
+#
+#   tdevpod            start the pod (locks the keyboard into a submap)
+#   tdevpod unlock     give the computer back (kills pod, restores binds)
+#   tdevpod install    add the SUPER+J binding + tdevpod submap to Hyprland
+#   tdevpod selftest   run a brief non-grabbing smoke test
+set -u
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+APP="$ROOT/tdevpod.py"
+PY="${TDEVPOD_PY:-python3}"
+SUBMAP="tdevpod"
+
+log()  { printf '[tdevpod] %s\n' "$*"; }
+hy()   { hyprctl "$@" >/dev/null 2>&1; }
+
+submap_enter() { hy dispatch "hl.dsp.submap(\"$SUBMAP\")" || true; }
+submap_leave() { hy dispatch 'hl.dsp.submap("reset")' || true; }
+
+stop_app() {
+    # kill only the TDevPod theatre, not this wrapper
+    pkill -f "$APP" 2>/dev/null || true
+    sleep 0.3
+}
+
+cmd="${1:-start}"
+
+case "$cmd" in
+  start)
+    if pgrep -f "$APP" >/dev/null 2>&1; then
+        hy dispatch focuswindow class:^tdevpod || true
+        exit 0
+    fi
+    tail_pid=""
+    # give the pod focus shortly after it maps
+    ( sleep 1.0; hy dispatch focuswindow class:^tdevpod || true ) &
+    tail_pid=$!
+    submap_enter
+    "$PY" "$APP"
+    rc=$?
+    kill "$tail_pid" 2>/dev/null
+    submap_leave
+    hy reload
+    log "pod stopped (rc=$rc); Hyprland bindings restored."
+    exit "$rc"
+    ;;
+
+  unlock)
+    stop_app
+    submap_leave
+    hy reload
+    log "unlocked; Hyprland bindings restored."
+    exit 0
+    ;;
+
+  install)
+    if grep -q "TDEVPOD MARKER" "$HOME/.config/hypr/bindings.lua" 2>/dev/null; then
+        log "already installed in ~/.config/hypr/bindings.lua"
+        exit 0
+    fi
+    cp "$HOME/.config/hypr/bindings.lua" "$HOME/.config/hypr/bindings.lua.bak.$(date +%s)"
+    cat >> "$HOME/.config/hypr/bindings.lua" <<LUA
+
+-- ── TDEVPOD MARKER ─────────────────────────────────────────────
+-- Toddler-safe developer pod: SUPER+J launches it, and while the
+-- "tdevpod" submap is active nothing else on the keyboard works.
+--   unlock:      SUPER + CTRL + SHIFT + ESC  (also works inside the app)
+--   emergency:   tdevpod unlock
+-- Remove this whole block to uninstall.
+hl.unbind("SUPER + J")  -- omarchy default: Toggle window split
+o.bind("SUPER + J", "TDevPod (toddler lock)", "$ROOT/tdevpod")
+o.window("^tdevpod", { float = true, fullscreen = 1 })
+
+hl.define_submap("tdevpod", function()
+  hl.bind("SUPER + CTRL + SHIFT + ESCAPE",
+          hl.dsp.exec_cmd("$ROOT/tdevpod unlock"))
+end)
+-- ─────────────────────────────────────────────────────────────────
+LUA
+    hy reload
+    hy configerrors || true
+    log "installed. Press SUPER+J to launch TDevPod."
+    exit 0
+    ;;
+
+  selftest)
+    "$PY" "$APP" --selftest
+    exit $?
+    ;;
+
+  *)
+    log "usage: $(basename "$0") [start|unlock|install|selftest]"
+    exit 2
+    ;;
+esac
