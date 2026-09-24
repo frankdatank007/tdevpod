@@ -1,0 +1,29 @@
+name: Feature idea
+description: Suggest something new, like a script, an animation, or a setting.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        TDevPod stays **display-only**: it never runs, parses, or opens anything,
+        and makes no network calls. Ideas that need any of that are out of scope.
+        See [CONTRIBUTING.md](https://github.com/frankdatank007/tdevpod/blob/main/CONTRIBUTING.md).
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What would you like TDevPod to do or show?
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it'd be fun or useful
+      description: Who is it for? (Your toddler, you, other parents?)
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope check
+      options:
+        - label: This keeps TDevPod display-only (nothing is executed or read beyond the scripts folder)
+          required: true

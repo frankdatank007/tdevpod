@@ -96,6 +96,11 @@ from any terminal; it restores everything.
   the real drawing code, offscreen (no lockdown). Needs `ffmpeg`.
 * **Launcher key**: change `o.bind("SUPER + J", …)` in the same marker block.
 
+## Feedback & contributing
+
+Found a bug or have an idea? Open an [issue](https://github.com/frankdatank007/tdevpod/issues/new/choose).
+New pretend scripts are the easiest way to contribute; see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Uninstall
 
 Delete the `TDEVPOD MARKER` block from `~/.config/hypr/bindings.lua`, then:

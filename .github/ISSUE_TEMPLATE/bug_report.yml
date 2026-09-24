@@ -1,0 +1,52 @@
+name: Bug report
+description: Something broke, looks wrong, or the lockdown didn't behave.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying TDevPod! If you're stuck in the pod right now, run
+        `tdevpod unlock` from a TTY or SSH session to get your keyboard back.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: dropdown
+    id: lockdown
+    attributes:
+      label: Did the toddler lock hold?
+      description: Could any keys or clicks escape the pod (workspaces, launcher, other apps)?
+      options:
+        - "Yes, nothing escaped"
+        - "No, something escaped (please describe above)"
+        - "Not sure / not related"
+    validations:
+      required: true
+  - type: input
+    id: omarchy
+    attributes:
+      label: Omarchy version
+      description: Output of `omarchy version` (or your distro if not on omarchy)
+    validations:
+      required: true
+  - type: input
+    id: hyprland
+    attributes:
+      label: Hyprland version
+      description: Output of `hyprctl version | head -1`
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Output / errors
+      description: Anything printed by `./tdevpod start` or `./tdevpod selftest`, and `hyprctl configerrors`.
+      render: shell
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Screenshots, custom scripts in ~/.config/tdevpod/scripts/, other notes.
