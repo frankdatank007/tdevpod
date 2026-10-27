@@ -8,8 +8,10 @@ real code". All keystrokes and clicks are swallowed inside TDevPod —
 the computer underneath is safely on timeout.
 
 The "code" you see comes from the pretend scripts in [`scripts/`](scripts/):
-Go, Bash, JavaScript, TypeScript, C, Rust, Ruby, Java, Kotlin, Haskell, Elixir,
-Python, Lua and SQL, about rockets, dinosaurs, bubbles, trains and snacks. The
+Go, Bash, JavaScript, TypeScript, C, C++, Rust, Ruby, Java, Kotlin, Haskell,
+Elixir, Python, Lua, Zig and SQL, about rockets, dinosaurs, bubbles, trains,
+pinwheels, cookies, balloons and submarines. Several of them end in animated
+progress bars and pinwheel/braille spinners. The
 screen stays **quiet until the kid touches something**: every keystroke reveals
 exactly one word of pretend code, every click pops a word plus a few sparks,
 and when hands go quiet the screen goes quiet. Nothing auto-types over their

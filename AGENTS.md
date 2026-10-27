@@ -19,7 +19,7 @@ combos. Goal: the computer underneath is safely on timeout while the kid plays.
 | `<repo>/tdevpod` | Bash wrapper: `start` / `unlock` / `install` / `selftest` |
 | `<repo>/tdevpod.py` | The GTK3 theatre + Engine (word-per-key reveal) |
 | `<repo>/tdevpod.py` `_load_theme()` | Loads omarchy's live theme colors at startup |
-| `<repo>/scripts/` | Default pretend-code pool (15 files, many languages) |
+| `<repo>/scripts/` | Default pretend-code pool (20 files, many languages; 5 are bar/pinwheel-heavy: `pinwheel_garden.py`, `space_elevator.rs`, `cookie_oven.lua`, `balloon_factory.cpp`, `submarine_dive.zig`) |
 | `~/.config/tdevpod/scripts/` | User drop-in pool; replaces `scripts/` if non-empty (dir auto-created) |
 | `<repo>/tools/record_demo.py` | Renders `docs/demo.gif` offscreen via `TDevPodApp.render()` |
 | `~/.config/hypr/bindings.lua` | `TDEVPOD MARKER` block: SUPER+J launcher, window rule, submap exit bind |
